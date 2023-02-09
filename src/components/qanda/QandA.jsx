@@ -10,7 +10,7 @@ import { TextField, Typography } from '@mui/material';
 
 const QandA = () => {
   const [propmt, setPromt] = useState("");
-  const [translationUrl, setTranslationUrl] = useState("");
+  const [answerUrl, setAnswerUrl] = useState("");
 
 
   const configuration = new Configuration({
@@ -19,19 +19,19 @@ const QandA = () => {
   });
 
   const openai = new OpenAIApi(configuration);
-  const translateToJp = async (e) => {
+  const answerHandler = async (e) => {
     
     const res = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: "How can I say" + propmt + " in Japanese?",
-      temperature: 0.3,
-      max_tokens: 100,
-      top_p: 1.0,
-      frequency_penalty: 0.0,
-      presence_penalty: 0.0,
+        model: "text-davinci-003",
+        prompt: propmt,
+        temperature: 0,
+        max_tokens: 100,
+        top_p: 1,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
     });
     
-    setTranslationUrl(res.data.choices[0].text);
+    setAnswerUrl(res.data.choices[0].text);
     e.target.value="";
 
   }
@@ -50,7 +50,7 @@ const QandA = () => {
                         alignItems="center"
                         sx={{marginTop:"200px"}}
                         >
-                        <Typography variant="h3" sx={{color:"#e582e5"}}>In Progress...</Typography>
+                        <Typography variant="h3" sx={{color:"#e582e5"}}>AI will answer any question!</Typography>
                        
                             
                 </Grid>
@@ -63,7 +63,6 @@ const QandA = () => {
                         sx={{
                             width:"auto",
                             marginTop:"50px",
-                            display:"none"
                         }} 
                 >
                     
@@ -86,16 +85,16 @@ const QandA = () => {
                         alignItems="center"
                         spacing={0}
                       >
-                        {translationUrl.length > 0 ? 
+                        {answerUrl.length > 0 ? 
                                               <Typography sx={{width:"100%", height:"auto", marginTop:"25px", marginBottom:"25px", textAlign:"center"}}>
-                                                  {translationUrl}  
+                                                  {answerUrl}  
                                               </Typography> 
                                             : 
                                             <>
                                             </>
                         } 
                       </Grid>
-                      <Button onClick={translateToJp} >Translate into Jpanaese</Button>
+                      <Button onClick={answerHandler} >Ask Question</Button>
                       
                       
                 </Grid>
